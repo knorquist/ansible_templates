@@ -1,0 +1,22 @@
+---
+- name: Install default utilities
+  hosts: all
+  remote_user: root
+  vars_files:
+    - ../vault.yaml
+
+  tasks:
+  - name: Update package list
+      ansible.builtin.apt:
+        update_cache: yes
+
+  - name: Install basic utilities
+      ansible.builtin.apt:
+        pkg:
+        - git
+        - wget
+        - curl
+        - whois
+        - apt-transport-https
+        - software-properties-common
+        - zsh

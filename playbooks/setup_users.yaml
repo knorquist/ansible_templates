@@ -1,0 +1,36 @@
+---
+- name: Setup default users
+  hosts: all
+  remote_user: root
+  vars_files:
+    - ../vault.yaml
+
+  tasks:
+    - name: Add 'dev' group
+      ansible.builtin.group:
+        name: dev
+        state: present
+
+    - name: Add user 'worker' and add to 'sudo' and 'dev' groups
+      ansible.builtin.user:
+        name: worker
+        groups: sudo,dev
+        password: "{{ vault_worker_pw_hash }}"
+        createhome: yes
+        home: /home/worker
+        shell: /bin/bash
+
+    - name: Add user 'myadmin' and add to 'sudo' and 'dev' groups
+      ansible.builtin.user:
+        name: myadmin
+        groups: sudo,dev
+        password: "{{ vault_myadmin_pw_hash }}"
+        createhome: yes
+        home: /home/myadmin
+        shell: /bin/zsh
+
+    - name: Add SSH public key for 'myadmin'
+      ansible.posix.authorized_key:
+        user: myadmin
+        state: present
+        key: "{{ lookup('file', '../user_keys/myadmin/id_rsa.pub') }}"

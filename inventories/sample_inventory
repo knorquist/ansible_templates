@@ -1,0 +1,11 @@
+[prod]
+fake-prod-00 ansible_host=XXX.XXX.XXX.XX
+[dev]
+fake-dev-00 ansible_host=XXX.XXX.XXX.XX
+
+[all_servers:children]
+prod
+dev
+
+[all_servers:vars]
+ansible_user=root

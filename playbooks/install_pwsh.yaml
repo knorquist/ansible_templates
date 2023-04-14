@@ -1,0 +1,19 @@
+---
+- name: Install PowerShell
+  hosts: all
+  remote_user: root
+  vars_files:
+    - ../vault.yaml
+
+  tasks:
+  - name: Install Microsoft apt repo
+    ansible.builtin.apt:
+      deb: "https://packages.microsoft.com/config/ubuntu/{{ansible_distribution_version}}/packages-microsoft-prod.deb"
+
+  - name: Update apt package list
+    ansible.builtin.apt:
+      update_cache: yes
+
+  - name: Install PowerShell
+    ansible.builtin.apt:
+      name: powershell

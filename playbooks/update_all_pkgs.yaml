@@ -1,0 +1,16 @@
+---
+- name: Update all packages [apt update && apt upgrade -y]
+  hosts: all
+  remote_user: root
+  vars_files:
+    - ../vault.yaml
+
+  tasks:
+    - name: Update package list
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Upgrade all packages to latest
+      ansible.builtin.apt:
+        name: "*"
+        state: latest
